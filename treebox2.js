@@ -1,6 +1,6 @@
 /**
  * 树形选择器组件
- * 
+ *
  * @class TreeBox2
  * @file "treebox2.js"
  * @requires Jquery.js
@@ -86,13 +86,13 @@ class TreeBox {
 
     /**
      * 构造方法
-     * 
-     * @param {String} selector 
-     * @param {Array} data 
-     * @param {Array} selected 
+     *
+     * @param {String} selector
+     * @param {Array} data
+     * @param {Array} selected
      */
     constructor(selector, data, selected = [], dataType = 'parent_id', titleName = 'name', pkName = 'id', showLabels = false, isLinkage = true, eventCallBack = undefined) {
-        
+
         this.selector = selector;
 
         this.showLabels = showLabels;
@@ -110,18 +110,18 @@ class TreeBox {
         this.render(pkName, titleName);
 
         this.setDefaultSelected(selected);
-        
+
     }
 
     /**
      * 初始化数据结构
-     * 
-     * @param {Array} data 
+     *
+     * @param {Array} data
      */
     initData(data, pkName, dataType) {
 
         const oldThis = this;
-        
+
         if (!data || data.length == 0) {
             oldThis.data = [];
         }
@@ -140,11 +140,11 @@ class TreeBox {
 
     /**
      * 格式化数据结构[children]
-     * 
-     * @param {Array} data 
-     * @param {Integer|String} parendId 
-     * @param {String} pkName 
-     * @param {String} dataType 
+     *
+     * @param {Array} data
+     * @param {Integer|String} parendId
+     * @param {String} pkName
+     * @param {String} dataType
      */
     formatDataByChildren(data, parendId = 0, pkName = 'id', dataType = 'children') {
         let _data = {};
@@ -163,7 +163,7 @@ class TreeBox {
 
             if (d.hasOwnProperty(dataType)) {
                 let __data = this.formatDataByChildren(d[dataType], d[pkName], pkName, dataType);
-                
+
                 _data = Object.assign(_data, __data);
             }
 
@@ -174,9 +174,9 @@ class TreeBox {
 
     /**
      * 格式化ParentId类型数据
-     * 
-     * @param {Array|Object} data 
-     * @param {String} dataType 
+     *
+     * @param {Array|Object} data
+     * @param {String} dataType
      */
     formatDataByParentId(data, dataType, pkName) {
         let _data = {};
@@ -202,21 +202,21 @@ class TreeBox {
 
     /**
      * 渲染方法
-     * 
+     *
      */
     render(pkName, titleName) {
-        
+
         this.renderHtml(pkName, titleName);
 
         this.listenEvent();
-    
+
     }
 
     /**
      * 渲染基础HTML
      */
     renderHtml(pkName, titleName) {
-        
+
         $(this.selector).addClass(this._Class).html(`
         <div class="${this._HeaderClass}">
             <div class="${this._LabelClass}"></div>
@@ -224,7 +224,7 @@ class TreeBox {
         </div>
         <div class="${this._ContainerClass}"></div>
         `);
-        
+
         this.renderTools();
 
         this.renderContainer(this.data, pkName, titleName);
@@ -294,10 +294,10 @@ class TreeBox {
 
     /**
      * 渲染容器内容
-     * 
-     * @param {*} data 
-     * @param {String} pkName 
-     * @param {String} titleName 
+     *
+     * @param {*} data
+     * @param {String} pkName
+     * @param {String} titleName
      */
     renderContainer(data, pkName, titleName, displayName = null) {
         if (!displayName) {
@@ -370,9 +370,10 @@ class TreeBox {
         }
 
         if(isHasData) {
-            $(this.selector + ' .' + this._ContainerClass).removeClass('not-data').html(html);
+            $(this.selector + ' .' + this._ContainerClass + ' .not-data').remove();
+            $(this.selector + ' .' + this._ContainerClass).html(html);
         } else {
-            $(this.selector + ' .' + this._ContainerClass).addClass('not-data').html('<div style="text-align:center;width:100%;">暂无数据</div>');
+            $(this.selector + ' .' + this._ContainerClass).html('<div class="not-data">暂无数据</div>');
         }
     }
 
@@ -417,7 +418,7 @@ class TreeBox {
      * @param that
      */
     showChildren(that) {
-        
+
         var li = $(that);
         li.parent().find('.cur').removeClass('cur');
         li.addClass('cur');
@@ -438,7 +439,7 @@ class TreeBox {
             }
         }
         $(this.selector + " div[parent_id="+ id +"]").attr('col' , col*1+1).removeClass('hide').show();
-    
+
     }
 
     /**
@@ -458,12 +459,12 @@ class TreeBox {
 
     /**
      * 设置选中状态
-     * 
-     * @param {*} id 
-     * @param {Boolean} status 
+     *
+     * @param {*} id
+     * @param {Boolean} status
      */
     setSelected(id, status) {
-        
+
         // 计算选择状态
         this.calcSelectStatus(id, status, true, true);
 
@@ -483,7 +484,7 @@ class TreeBox {
             oldThis.renderSelected();
         });
     }
-    
+
     /**
      * 监听清除所有事件
      */
@@ -508,7 +509,7 @@ class TreeBox {
             oldThis.data['0'].forEach(function(v, i) {
                 oldThis.setValue(v[oldThis.pkName], v[oldThis.titleName]);
             });
-            
+
             oldThis.renderSelected();
         });
     }
@@ -548,7 +549,7 @@ class TreeBox {
                 }
                 oldThis.renderContainer(tmpData, oldThis.pkName, oldThis.titleName, displayName);
             }
-            
+
             oldThis.renderSelected();
             oldThis.listenRowEvent();
             oldThis.listenSelectedEvent();
@@ -556,7 +557,7 @@ class TreeBox {
             oldThis.listenSelectAllEvent();
         });
     }
-    
+
     /**
      * 设置默认选择值
      *
@@ -749,9 +750,9 @@ class TreeBox {
 
     /**
      * 获取绝对标签
-     * 
-     * @param {String|Number} id 
-     * @param {String} separate 
+     *
+     * @param {String|Number} id
+     * @param {String} separate
      */
     getAbxText(id, separate = ' / ') {
         let title = '';
