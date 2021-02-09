@@ -32,11 +32,6 @@ class TreeBox {
     titleName = 'title';
 
     /**
-     * 缓存数据
-     */
-    cacheData = [];
-
-    /**
      * 选中部分数据
      */
     selected = new Set([]);
@@ -134,11 +129,11 @@ class TreeBox {
         // 判断数据格式是哪种
         if (dataType == 'parent_id') {
 
-            oldThis.cacheData = oldThis.data = oldThis.formatDataByParentId(data, dataType, pkName);
+            oldThis.data = oldThis.formatDataByParentId(data, dataType, pkName);
             return ;
         }
 
-        oldThis.cacheData = oldThis.data = oldThis.formatDataByChildren(data, 0, pkName, dataType);
+        oldThis.data = oldThis.formatDataByChildren(data, 0, pkName, dataType);
         return ;
 
     }
@@ -232,7 +227,7 @@ class TreeBox {
         
         this.renderTools();
 
-        this.renderContainer(pkName, titleName);
+        this.renderContainer(this.data, pkName, titleName);
 
     }
 
@@ -300,17 +295,19 @@ class TreeBox {
     /**
      * 渲染容器内容
      * 
+     * @param {*} data 
      * @param {String} pkName 
      * @param {String} titleName 
      */
-    renderContainer(pkName, titleName, displayName = null) {
+    renderContainer(data, pkName, titleName, displayName = null) {
         if (!displayName) {
             displayName = titleName;
         }
         let html = '';
-        for(let parendId in this.data){
+        let isHasData = false;
+        for(let parendId in data){
             // 按组渲染
-            let list = this.data[parendId];
+            let list = data[parendId];
             let html_list = "";
 
             for(let j in list){
@@ -357,6 +354,7 @@ class TreeBox {
                 }catch(err){}
 
                 html_list += "<li "+_class+" v="+item[pkName]+" title='"+item[titleName]+"'><em>"+box+"</em><div class='label-panel'><label for='"+id+"'>"+item[displayName]+"</label></div><span></span></li>";
+                isHasData = true;
             }
 
             let _class = 'box';
@@ -371,8 +369,11 @@ class TreeBox {
             html += "<div parent_id=" + parendId + _class + "><ul>" + html_list + "</ul></div>";
         }
 
-        $(this.selector + ' .' + this._ContainerClass).html(html);
-
+        if(isHasData) {
+            $(this.selector + ' .' + this._ContainerClass).removeClass('not-data').html(html);
+        } else {
+            $(this.selector + ' .' + this._ContainerClass).addClass('not-data').html('<div style="text-align:center;width:100%;">暂无数据</div>');
+        }
     }
 
     /**
@@ -523,19 +524,19 @@ class TreeBox {
             let val = $(this).val().trim();
             let displayName = oldThis.titleName;
             if (val.length == 0) {
-                oldThis.data = oldThis.cacheData;
+                oldThis.renderContainer(oldThis.data, oldThis.pkName, oldThis.titleName, displayName);
             } else {
                 let tmpData = {0:[]};
-                for(let i in oldThis.cacheData) {
-                    let list = oldThis.cacheData[i];
+                for(let i in oldThis.data) {
+                    let list = oldThis.data[i];
                     list.forEach((item, index) => {
                         if (item[oldThis.titleName].indexOf(val) != -1) {
                             displayName = 'displayName';
                             item[displayName] = oldThis.getAbxText(item[oldThis.pkName]);
                             tmpData[0].push(item);
                             // 如果有下级，就显示下级所有列表
-                            if(oldThis.cacheData.hasOwnProperty(item[oldThis.pkName])) {
-                                let childrens = oldThis.cacheData[item[oldThis.pkName]];
+                            if(oldThis.data.hasOwnProperty(item[oldThis.pkName])) {
+                                let childrens = oldThis.data[item[oldThis.pkName]];
                                 for(let cindex in childrens) {
                                     childrens[cindex][displayName] = item[displayName] + ' / ' + childrens[cindex][oldThis.titleName];
                                     tmpData[0].push(childrens[cindex]);
@@ -545,10 +546,9 @@ class TreeBox {
                         }
                     });
                 }
-                oldThis.data = tmpData;
+                oldThis.renderContainer(tmpData, oldThis.pkName, oldThis.titleName, displayName);
             }
             
-            oldThis.renderContainer(oldThis.pkName, oldThis.titleName, displayName);
             oldThis.renderSelected();
             oldThis.listenRowEvent();
             oldThis.listenSelectedEvent();
@@ -769,8 +769,8 @@ class TreeBox {
             if (list.includes(id)) {
                 pid = index;
 
-                for( let key in this.cacheData) {
-                    let v = this.cacheData[key];
+                for( let key in this.data) {
+                    let v = this.data[key];
                     for( let i in v) {
                         let item = v[i];
                         if (item[this.pkName] == id) {

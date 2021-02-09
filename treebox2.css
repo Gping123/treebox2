@@ -6,6 +6,7 @@
     --theme-color: rgb(60, 140, 188);
 	--font-height: 14px;
 	font-size: 13px !important;
+	background-color: #ffffff;
 }
 
 .tree-box{
@@ -62,8 +63,8 @@
 
 /* 工具栏 开始 */
 .tree-box-tools{
-	width: 100%;
-	padding: 3px;
+	width: calc(100% - 10px);
+	padding: 5px;
 }
 
 /* 工具栏变量 */
@@ -117,6 +118,12 @@
 	height: 300px;
 	display: flex;
 	overflow-y: auto;
+}
+
+.tree-box .tree-box-container.not-data{
+	height: 28px;
+	line-height: 28px;
+	text-align: center;
 }
 
 /* 复选框及em样式 */
