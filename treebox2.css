@@ -1,0 +1,194 @@
+/* 默认样式 */
+.tree-box * {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    --theme-color: rgb(60, 140, 188);
+	--font-height: 14px;
+	font-size: 13px !important;
+}
+
+.tree-box{
+	min-width: 260px;
+}
+
+/* 所有滚动条样式 */
+.tree-box *::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width : 5px;
+    height: 8px;
+}
+.tree-box *::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+	background   : #888888;
+	border-radius: 4px;
+}
+.tree-box *::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    background   : #cccccc;
+}
+
+/* 隐藏样式 */
+.hide{
+    display: none;
+}
+
+/* 头部样式 开始 */
+.tree-box-header{
+	
+}
+
+/* 标签栏样式 开始 */
+.tree-box-header .tree-box-labels {
+	display: flex;
+	flex-wrap: wrap;
+}
+/* 标签项样式 */
+.tree-box-header .tree-box-labels .tree-box-label{
+	margin: 2px 3px;
+	border: 1px solid var(--theme-color);
+	background-color: var(--theme-color);
+	padding: 3px 5px;
+	border-radius: 3px;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+.tree-box-header .tree-box-labels .close{
+	cursor: pointer;
+}
+
+/* 标签栏样式 结束 */
+
+/* 工具栏 开始 */
+.tree-box-tools{
+	width: 100%;
+	padding: 3px;
+}
+
+/* 工具栏变量 */
+.tree-box-tools *{
+	--tools-height: 25px;
+	--tools-bg-color: transparent;
+	--tools-border-color: #cccccc;
+	--tools-outline-color: var(--theme-color);
+}
+
+/* 搜索框 */
+.tree-box-tools .tree-box-search {
+	font-size: 1 em;
+	background-color: var(--tools-bg-color);
+	height: var(--tools-height) !important;
+	border: 1px solid var(--tools-border-color);
+	outline-color: var(--tools-outline-color);
+	width: 200px;
+	border-radius: 5px;
+	text-indent: .5em;
+}
+
+/* 工具栏按钮 开始 */
+.tree-box-tools .tree-box-btn {
+	background-color: var(--tools-bg-color);
+	border: 1px solid var(--tools-border-color);
+	border-radius: 5px;
+	outline-color: var(--tools-outline-color);
+}
+
+.tree-box-tools button.tree-box-btn:focus,
+.tree-box-tools button.tree-box-btn:hover,
+.tree-box-tools button.tree-box-btn:active{
+	border: 1px solid var(--tools-outline-color);
+	color: var(--tools-outline-color);
+}
+
+.tree-box-tools .tree-box-select-all,
+.tree-box-tools .tree-box-clear-all{
+	height: calc(var(--tools-height) + 2px) !important;
+	padding: 0px 5px;
+	cursor: pointer;
+}
+/* 工具栏按钮 结束 */
+/* 工具栏 结束 */
+
+/* 头部样式 结束 */
+
+/* 容器部分样式 开始 */
+.tree-box .tree-box-container{
+	height: 300px;
+	display: flex;
+	overflow-y: auto;
+}
+
+/* 复选框及em样式 */
+.tree-box input[type=checkbox],
+.tree-box em{
+	width: 16px;
+	height: 16px;
+	vertical-align: middle;
+	margin-right: 10px !important;
+	display: inline-block;
+	opacity:1!important;
+}
+
+/* 盒子部分样式 */
+.tree-box .box{
+	height: calc(100%-2px);
+	overflow: auto;
+	min-width: 260px;
+    flex: 1;
+	border-right: 1px solid #dddddd;
+	border-top: 1px solid #dcdcdc;
+	border-bottom: 1px solid #dcdcdc;
+}
+
+/* 第一个盒子样式 */
+.tree-box .box:first-child{
+	border-left: 1px solid #dcdcdc;
+}
+
+/* 每一项的样式 */
+.tree-box li{
+	height: 35px;
+	line-height: 35px;
+	padding:0 10px;
+	cursor: pointer;
+	color:#666666;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+    user-select:none;
+    display: flex;
+}
+
+/* li hover效果 */
+.tree-box li:hover,
+.tree-box .cur{
+	background-color: #F4F4F4;
+}
+.tree-box li:hover,
+.tree-box .blue{
+	background-color: #E7F2FC;
+}
+
+/* 每一项标签显示部分占最大空间 */
+.tree-box li .label-panel {
+	flex: 1;
+	text-align: left;
+}
+
+/* 选择样式 */
+.tree-box .selected{
+	background-color:var(--theme-color);
+}
+
+/* 显示 > */
+.tree-box .children span:before{
+	content: ">";
+	display: block;
+	right: 0px;
+	width: 20px;
+	height: 35px;
+	float: right;
+}
+
+/* 容器部分样式 结束 */
