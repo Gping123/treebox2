@@ -353,7 +353,7 @@ class TreeBox {
                     }
                 }catch(err){}
 
-                html_list += "<li "+_class+" v="+item[pkName]+" title='"+item[titleName]+"'><em>"+box+"</em><div class='label-panel'><label for='"+id+"'>"+item[displayName]+"</label></div><span></span></li>";
+                html_list += "<li "+_class+" v="+item[pkName]+" title='"+item[titleName]+"'><em>"+box+"</em><div class='label-panel'>"+item[displayName]+"</div><span></span></li>";
                 isHasData = true;
             }
 
