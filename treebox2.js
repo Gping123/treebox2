@@ -392,6 +392,23 @@ class TreeBox {
 
         this.listenSearchEvent();
 
+        this.listenLiClickEvent();
+
+    }
+
+    /**
+     * 行点击事件
+     */
+    listenLiClickEvent() {
+        const oldThis = this;
+
+        $(this.selector + ' ul li').on('click' ,  function(e){
+            let childrenCheckbox = $(this).find('input[type="checkbox"]');
+            let id = $(this).attr('v');
+            let status = childrenCheckbox.is(':checked');
+            childrenCheckbox.prop('checked', !status);
+            oldThis.setSelected(id, !status);
+        });
     }
 
     /**
@@ -448,12 +465,13 @@ class TreeBox {
     listenSelectedEvent() {
         const oldThis = this;
 
-        $(this.selector + ' input[type="checkbox"]').click(function(){
+        $(this.selector + ' input[type="checkbox"]').click(function(e){
 
             let id = $(this).parents('li').attr('v');
             let status = $(this).is(':checked');
 
             oldThis.setSelected(id, status);
+            e.stopPropagation();
         });
     }
 
