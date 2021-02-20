@@ -208,6 +208,8 @@ class TreeBox {
 
         this.renderHtml(pkName, titleName);
 
+        this.showDefaultLavel2Dom();
+
         this.listenEvent();
 
     }
@@ -517,16 +519,32 @@ class TreeBox {
     }
 
     /**
+     * 默认展开二级
+     */
+    showDefaultLavel2Dom(){
+        let l2ID = $(this.selector + ' .root .children:first-child').attr('v');
+        $(this.selector + ' .box[parent_id="'+l2ID+'"]').attr('col', 1).removeClass('hide');
+    }
+
+    /**
      * 全选事件
      */
     listenSelectAllEvent() {
         const oldThis = this;
-
         let _selector = this.selector + ' .' + this._HeaderClass + ' .' + this._ToolClass + ' .' + this._SelectAllClass.join('.');
         $(_selector).on('click', function() {
-            oldThis.data['0'].forEach(function(v, i) {
-                oldThis.setValue(v[oldThis.pkName], v[oldThis.titleName]);
-            });
+            if(oldThis.isLinkage){
+                oldThis.data['0'].forEach(function (v, i) {
+                    oldThis.setValue(v[oldThis.pkName], v[oldThis.titleName]);
+                });
+            } else {
+                for (let key in oldThis.data){
+                    let list = oldThis.data[key];
+                    for(let k in list) {
+                        oldThis.setValue(list[k][oldThis.pkName], list[k][oldThis.titleName]);
+                    }
+                }
+            }
 
             oldThis.renderSelected();
         });
@@ -591,6 +609,8 @@ class TreeBox {
         }
 
         // 默认值
+        this.selected = new Set([]);
+        this.value = {};
         selected.forEach((id) => {
             this.setValue(id, true);
         });
@@ -741,8 +761,13 @@ class TreeBox {
 
         if (status) {
             // 设置选择状态
+            let text = this.getText(id);
+            // 如果找不到 就不添加
+            if(!text) {
+                return ;
+            }
+            this.value[id] = text;
             this.selected.add(id);
-            this.value[id] = this.getText(id);
         } else {
             this.selected.delete(id);
             delete this.value[id];
